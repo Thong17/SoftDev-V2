@@ -8,6 +8,10 @@ exports.privilege = {
             route: 'menu',
             action: 'queue'
         },
+        promotion: {
+            route: 'menu',
+            action: 'promotion'
+        },
         operation: {
             route: 'menu',
             action: 'operation'

@@ -11,14 +11,17 @@ const StoreSetting = require('../models/StoreSetting')
 exports.index = async (req, res) => {
     try {
         const store = await Store.findOne().populate('logo')
-        return response.success(200, { data: store }, res)
+        const floorCount = await StoreFloor.count({ isDisabled: false })
+        const tableCount = await StoreStructure.count({ isDisabled: false, type: 'table' })
+        const roomCount = await StoreStructure.count({ isDisabled: false, type: 'room' })
+        return response.success(200, { data: store, floorCount, tableCount, roomCount }, res)
     } catch (err) {
         if (err) return response.failure(422, { msg: failureMsg.trouble }, res, err)
     }
 }
 
 exports.detail = async (req, res) => {
-    Store.findOne({}, (err, store) => {
+    Store.findOne({}, async (err, store) => {
         if (err) return response.failure(422, { msg: failureMsg.trouble }, res, err)
         return response.success(200, { data: store }, res)
     }).populate('logo')
